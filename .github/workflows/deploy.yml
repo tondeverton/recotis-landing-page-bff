@@ -1,0 +1,53 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Auth Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.CREDENTIALS_JSON }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: GCloud Docker Auth
+        run: gcloud auth configure-docker gcr.io --quiet
+
+      - name: Get token middleware
+        run: gsutil cp gs://www.recotis.com/scripts/tokenMiddleware.go ./api/middlewares/
+
+      - name: Build Docker Image
+        run: docker build -t gcr.io/tondeverton/recotis-landing-page/bff .
+
+      - name: Push Docker Image
+        run: docker push gcr.io/tondeverton/recotis-landing-page/bff
+
+      - name: Deploy to Google Cloud Run
+        run: |
+          gcloud run deploy recotis-landing-page-bff \
+            --image gcr.io/tondeverton/recotis-landing-page/bff \
+            --platform managed \
+            --region europe-west1 \
+            --allow-unauthenticated \
+            --update-env-vars SMTP_USERNAME="${{ secrets.SMTP_USERNAME }}" \
+            --update-env-vars SMTP_PASSWORD="${{ secrets.SMTP_PASSWORD }}" \
+            --update-env-vars SMTP_SERVER="${{ secrets.SMTP_SERVER }}" \
+            --update-env-vars SMTP_SERVER_PORT="${{ secrets.SMTP_SERVER_PORT }}" \
+            --update-env-vars EMAIL_TARGET="${{ secrets.EMAIL_TARGET }}" \
+            --update-env-vars TOKEN_PASSWORD="${{ secrets.TOKEN_PASSWORD }}" \
+            --quiet
