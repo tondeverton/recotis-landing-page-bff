@@ -1,0 +1,27 @@
+# Ignore the Dockerfile and .dockerignore file
+Dockerfile
+.dockerignore
+
+# Ignore vendor directory
+vendor/
+
+# Ignore binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Ignore temporary files
+*.log
+*.tmp
+*.out
+
+# Ignore editor specific files
+*~
+*.swp
+.DS_Store
+Thumbs.db
+
+# Go tests
+*_test.go

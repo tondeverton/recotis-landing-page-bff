@@ -1,0 +1,38 @@
+# Go binary files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go workspace files
+bin/
+vendor/
+Gopkg.lock
+
+# Build directory
+/build/
+
+# Temporary files
+*.log
+*.tmp
+*.out
+
+# IDE files
+.idea/
+*.sublime-workspace
+*.sublime-project
+.vscode/
+*.iml
+
+# Go test coverage
+*.cov
+
+# Environment variables
+.env
+
+# Ignore editor specific files
+*~ 
+*.swp
+.DS_Store
+Thumbs.db
