@@ -2,6 +2,10 @@
 
 This project is a REST API for [Renata Cotis's landing page](https://recotis.com). Nowadays this project provides two routes for the landing page which are `/signed-urls` and `/email`.
 
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. See the [LICENSE](./LICENSE.txt) file for details.
+
 ## Run
 
 This is a Go project.
